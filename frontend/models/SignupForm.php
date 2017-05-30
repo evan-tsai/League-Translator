@@ -12,6 +12,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $confirmPassword;
 
 
     /**
@@ -31,8 +32,9 @@ class SignupForm extends Model
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password', 'confirmPassword'], 'required'],
+            [['password', 'confirmPassword'], 'string', 'min' => 6],
+            [['confirmPassword'], 'compare', 'compareAttribute' => 'password', 'message' => 'Password re-enter incorrect']
         ];
     }
 
