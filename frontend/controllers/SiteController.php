@@ -72,6 +72,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $test = \common\service\ApiService::insertChampion();
         return $this->render('index');
     }
 
