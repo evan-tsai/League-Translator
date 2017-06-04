@@ -10,6 +10,7 @@ class m170530_015703_administrators extends Migration
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
+            'email' => $this->string(40),
             'auth_key' => $this->string(32)->notNull(),
             'password_salt' => $this->string()->notNull(),
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
@@ -20,6 +21,7 @@ class m170530_015703_administrators extends Migration
         ]);
         $this->insert($this->tableName, [
             'username' => 'admin',
+            'email' => 'admin@gmail.com',
             'password_salt' => Yii::$app->security->generatePasswordHash('123456'),
             'status' => 10,
             'created_at' => time(),
