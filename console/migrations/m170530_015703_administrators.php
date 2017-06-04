@@ -18,7 +18,7 @@ class m170530_015703_administrators extends Migration
             'updated_at' => $this->integer()->notNull(),
             'last_logon_ip' => $this->string(40)->defaultValue('0.0.0.0'),
             'last_logon_time' => $this->integer()->defaultValue(0),
-        ]);
+        ], 'ENGINE=InnoDB');
         $this->insert($this->tableName, [
             'username' => 'admin',
             'email' => 'admin@gmail.com',
