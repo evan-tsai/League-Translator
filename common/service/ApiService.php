@@ -14,13 +14,6 @@ use common\models\ChampionSpells;
 
 class ApiService
 {
-    public static $locale = [
-        'en_US' => 'english',
-        'zh_TW' => 'taiwan',
-        'zh_CN' => 'china',
-        'ko_KR' => 'korea',
-        'ja_JP' => 'japan',
-    ];
     public static $apiKey = 'RGAPI-b2bc22fe-b01e-4fca-8e2b-8cb65d3afd44';
 
     public static function insertChampion() {
@@ -32,7 +25,7 @@ class ApiService
         $champions = [];
         $spellData = [];
         $columnTitle[] = 'champion_id';
-        foreach (self::$locale as $key => $label) {
+        foreach (Yii::$app->params['languages'] as $key => $label) {
             // call API while iterating through all regions
             $url = 'https://na1.api.riotgames.com/lol/static-data/v3/champions?champListData=spells&tags=image&tags=passive&dataById=true&locale='.$key.'&api_key='.self::$apiKey;
             $response = file_get_contents($url);

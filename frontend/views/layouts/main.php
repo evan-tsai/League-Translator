@@ -60,6 +60,40 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
+        <div class="languages">
+            <form>
+                <select id="language">
+                    <?php
+                    foreach(Yii::$app->params['languages'] as $key => $value) {
+                        $select = '';
+                        if (\Yii::$app->language === $key) {
+                            $select = 'selected';
+                        }
+                        switch ($key) {
+                            case 'en_US':
+                                $language = 'English';
+                                break;
+                            case 'zh_TW':
+                                $language = '繁體中文';
+                                break;
+                            case 'zh_CN':
+                                $language = '简体中文';
+                                break;
+                            case 'ko_KR':
+                                $language = '한국어';
+                                break;
+                            case 'ja_JP':
+                                $language = '日本語';
+                                break;
+                            default:
+                                $language = $value;
+                        }
+                        echo '<option value="'.$key.'" '.$select.'>'.$language.'</option>';
+                    }
+                    ?>
+                </select>
+            </form>
+        </div>
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
