@@ -10,6 +10,7 @@ class m170607_084732_map extends Migration
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'map_id' => $this->integer()->notNull()->unique(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'english' => $this->string(32),
             'taiwan' => $this->string(32),
             'china' => $this->string(32),

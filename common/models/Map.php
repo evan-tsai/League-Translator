@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $map_id
+ * @property integer $status
  * @property string $english
  * @property string $taiwan
  * @property string $china
@@ -17,6 +18,8 @@ use Yii;
  */
 class Map extends \yii\db\ActiveRecord
 {
+    CONST STATUS_INACTIVE = 0;
+    CONST STATUS_ACTIVE = 1;
     /**
      * @inheritdoc
      */
@@ -32,7 +35,7 @@ class Map extends \yii\db\ActiveRecord
     {
         return [
             [['map_id'], 'required'],
-            [['map_id'], 'integer'],
+            [['map_id', 'status'], 'integer'],
             [['english', 'taiwan', 'china', 'korea', 'japan'], 'string', 'max' => 32],
             [['map_id'], 'unique'],
         ];
@@ -46,6 +49,7 @@ class Map extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'map_id' => 'Map ID',
+            'status' => 'Status',
             'english' => 'English',
             'taiwan' => 'Taiwan',
             'china' => 'China',
