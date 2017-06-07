@@ -98,18 +98,19 @@ class ApiService
 
         $championName = $championData['key'];
 
-        if (!file_exists(Yii::getAlias('@frontend/web/img/'.$championName))) {
-            mkdir(Yii::getAlias('@frontend/web/img/'.$championName), 0777);
+        $alias = '@frontend/web/img/'.$championName;
+        if (!file_exists(Yii::getAlias($alias))) {
+            mkdir(Yii::getAlias($alias), 0777);
 
             $urlPath = 'http://ddragon.leagueoflegends.com/cdn/'.$version.'/img/';
             $iconName = $championData['image']['full'];
 
-            file_put_contents(Yii::getAlias('@frontend/web/img/'.$championName.'/'.$iconName), file_get_contents($urlPath.'champion/'.rawurlencode($iconName)));
-            file_put_contents(Yii::getAlias('@frontend/web/img/'.$championName.'/Q.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][0]['image']['full'])));
-            file_put_contents(Yii::getAlias('@frontend/web/img/'.$championName.'/W.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][1]['image']['full'])));
-            file_put_contents(Yii::getAlias('@frontend/web/img/'.$championName.'/E.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][2]['image']['full'])));
-            file_put_contents(Yii::getAlias('@frontend/web/img/'.$championName.'/R.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][3]['image']['full'])));
-            file_put_contents(Yii::getAlias('@frontend/web/img/'.$championName.'/passive.png'), file_get_contents($urlPath.'passive/'.rawurlencode($championData['passive']['image']['full'])));
+            file_put_contents(Yii::getAlias($alias.'/'.$iconName), file_get_contents($urlPath.'champion/'.rawurlencode($iconName)));
+            file_put_contents(Yii::getAlias($alias.'/Q.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][0]['image']['full'])));
+            file_put_contents(Yii::getAlias($alias.'/W.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][1]['image']['full'])));
+            file_put_contents(Yii::getAlias($alias.'/E.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][2]['image']['full'])));
+            file_put_contents(Yii::getAlias($alias.'/R.png'), file_get_contents($urlPath.'spell/'.rawurlencode($championData['spells'][3]['image']['full'])));
+            file_put_contents(Yii::getAlias($alias.'/passive.png'), file_get_contents($urlPath.'passive/'.rawurlencode($championData['passive']['image']['full'])));
         }
 
         return $spellData;
