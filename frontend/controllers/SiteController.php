@@ -29,7 +29,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'language'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -72,7 +72,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $test = \common\service\ApiService::insertChampion();
         return $this->render('index');
     }
 
@@ -161,6 +160,19 @@ class SiteController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    public function actionLanguage()
+    {
+        if(isset($_POST['lang'])) {
+            Yii::$app->language = $_POST['lang'];
+            $cookie = new \yii\web\Cookie([
+                'name' => 'lang',
+                'value' => $_POST['lang'],
+            ]);
+
+            Yii::$app->getResponse()->getCookies()->add($cookie);
+        }
     }
 
     /**
