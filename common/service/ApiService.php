@@ -11,10 +11,17 @@ namespace common\service;
 use Yii;
 use common\models\Champions;
 use common\models\ChampionSpells;
+use common\models\ItemSubtypeList;
 
 class ApiService
 {
     public static $apiKey = 'RGAPI-b2bc22fe-b01e-4fca-8e2b-8cb65d3afd44';
+
+    public static function insertItem() {
+        $test = ItemSubtypeList::find()->asArray()->all();
+        $test = array_column($test, 'english', 'subtype_id');
+        die(var_dump($test));
+    }
 
     public static function insertChampion() {
         // find all champion IDs in database

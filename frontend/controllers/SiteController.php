@@ -72,6 +72,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        \common\service\ApiService::insertItem();
         return $this->render('index');
     }
 

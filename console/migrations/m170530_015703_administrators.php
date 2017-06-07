@@ -33,7 +33,7 @@ class m170530_015703_administrators extends Migration
 
     }
 
-    public function down()
+    public function safeDown()
     {
         echo "m170530_015703_administrators cannot be reverted.\n";
 
