@@ -43,8 +43,8 @@ class ApiService
                 if (!isset($data['name'])) {
                     continue;
                 }
-                    $itemData[$id]['item_id'] = $id;
-                    $itemData[$id][$label] = $data['name'];
+                $itemData[$id]['item_id'] = $id;
+                $itemData[$id][$label] = $data['name'];
 
                 if (isset($data['tags'])) {
                     foreach ($data['tags'] as $type) {
@@ -63,6 +63,19 @@ class ApiService
                             $mapData[$id.'_'.$mapID]['map_id'] = $mapID;
                         }
                     }
+                }
+
+                // get item images
+                $alias = '@frontend/web/img/item';
+                $iconName = $data['image']['full'];
+                $version = $localeData['version'];
+                if (!file_exists(Yii::getAlias($alias))) {
+                    mkdir(Yii::getAlias($alias), 0777);
+                }
+
+                if (!file_exists(Yii::getAlias($alias.'/'.$id.'.png'))) {
+                    $urlPath = 'http://ddragon.leagueoflegends.com/cdn/'.$version.'/img/';
+                    file_put_contents(Yii::getAlias($alias.'/'.$id.'.png'), file_get_contents($urlPath.'item/'.rawurlencode($iconName)));
                 }
             }
         }
