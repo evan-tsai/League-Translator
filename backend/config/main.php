@@ -51,5 +51,8 @@ return [
         ],
         */
     ],
+    'as beforeRequest' => [
+        'class' => 'common\components\ChangeLanguage',
+    ],
     'params' => $params,
 ];
