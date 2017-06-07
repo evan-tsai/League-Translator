@@ -30,7 +30,4 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
-    'as beforeRequest' => [
-        'class' => 'common\components\ChangeLanguage',
-    ],
 ];
