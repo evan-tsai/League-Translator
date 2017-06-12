@@ -34,7 +34,7 @@ class CronController extends Controller
     // add cron job in linux, execute update every 24 hours
     public function actionInit() {
         $output = shell_exec('crontab -r');
-        file_put_contents('/tmp/crontab.txt', $output.'30 2 * * * /usr/bin/php /www/project/yii cron/update'.PHP_EOL);
+        file_put_contents('/tmp/crontab.txt', $output.'30 2 * * * /usr/bin/php '.getcwd().'/yii cron/update'.PHP_EOL);
         echo exec('crontab /tmp/crontab.txt');
     }
 
