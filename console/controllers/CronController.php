@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\controllers;
+namespace console\controllers;
 
 use Yii;
 use yii\web\Controller;
@@ -20,6 +20,10 @@ class CronController extends Controller
 
             return FALSE;
         }*/
+
+        if($action->id == 'update'){
+            $this->enableCsrfValidation = false;
+        }
 
         return parent::beforeAction($action);
     }
