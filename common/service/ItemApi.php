@@ -34,7 +34,7 @@ class ItemApi extends BaseApiService
             }
             $this->itemData[$id]['item_id'] = $id;
             $this->itemData[$id][$label] = $data['name'];
-            if (isset($data['tags'])) {
+            if (isset($data['tags']) && $label === 'english') {
                 foreach ($data['tags'] as $type) {
                     $type = strtoupper($type);
                     if (array_key_exists($type, $this->itemList)) {
@@ -43,7 +43,7 @@ class ItemApi extends BaseApiService
                     }
                 }
             }
-            if (isset($data['maps'])) {
+            if (isset($data['maps']) && $label === 'english') {
                 foreach ($data['maps'] as $mapID => $mapFlag) {
                     if (true === $mapFlag) {
                         $this->mapData[$id.'_'.$mapID]['item_id'] = $id;

@@ -2,13 +2,13 @@
 
 namespace console\controllers;
 
-use common\models\SummonerSpells;
 use Yii;
 use yii\web\Controller;
 use common\models\Settings;
 use common\service\ChampionApi;
 use common\service\ItemApi;
 use common\service\MapApi;
+use common\service\MasteryApi;
 use common\service\SummonerSpellApi;
 use common\helpers\SettingHelper;
 
@@ -18,11 +18,11 @@ class CronController extends Controller
     public function beforeAction($action)
     {
         // only executable on local
-        /*if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
+        if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
             \Yii::$app->response->content = 'Access Denied!';
 
             return false;
-        }*/
+        }
 
         if($action->id == 'update' || $action->id == 'init'){
             $this->enableCsrfValidation = false;
@@ -70,6 +70,12 @@ class CronController extends Controller
 
                 $items = new ItemApi([
                     'url' => 'https://na1.api.riotgames.com/lol/static-data/v3/items?itemListData=image&tags=tags&tags=maps&locale=',
+                    'version' => $version,
+                ]);
+                $items->insert();
+
+                $items = new MasteryApi([
+                    'url' => 'https://na1.api.riotgames.com/lol/static-data/v3/masteries?tags=masteryTree&tags=image&locale=',
                     'version' => $version,
                 ]);
                 $items->insert();
