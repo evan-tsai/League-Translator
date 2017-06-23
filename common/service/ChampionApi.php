@@ -69,8 +69,12 @@ class ChampionApi extends BaseApiService
         $spellData[$localeE] = $championData['spells'][2]['name'];
         $spellData[$localeR] = $championData['spells'][3]['name'];
         try {
+            $path = '@frontend/web/img/champions';
+            if (!file_exists(Yii::getAlias($path))) {
+                mkdir(Yii::getAlias($path), 0777);
+            }
             $championName = $championData['key'];
-            $alias = '@frontend/web/img/'.$championName;
+            $alias = $path.'/'.$championName;
             if (!file_exists(Yii::getAlias($alias))) {
                 mkdir(Yii::getAlias($alias), 0777);
                 $urlPath = 'http://ddragon.leagueoflegends.com/cdn/'.$this->version.'/img/';

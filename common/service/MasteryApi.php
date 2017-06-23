@@ -39,7 +39,19 @@ class MasteryApi extends BaseApiService
             }
             $this->masteries[$id][$label] = $data['name'];
 
-            //todo images
+            try {
+                $alias = '@frontend/web/img/masteries';
+                $iconName = $data['image']['full'];
+                if (!file_exists(Yii::getAlias($alias))) {
+                    mkdir(Yii::getAlias($alias), 0777);
+                }
+                if (!file_exists(Yii::getAlias($alias.'/'.$id.'.png'))) {
+                    $urlPath = 'http://ddragon.leagueoflegends.com/cdn/'.$this->version.'/img/';
+                    file_put_contents(Yii::getAlias($alias.'/'.$id.'.png'), file_get_contents($urlPath.'mastery/'.rawurlencode($iconName)));
+                }
+            } catch (\ErrorException $e) {
+                throw $e;
+            }
         }
     }
 

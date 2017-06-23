@@ -18,11 +18,11 @@ class CronController extends Controller
     public function beforeAction($action)
     {
         // only executable on local
-        if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
+        /*if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
             \Yii::$app->response->content = 'Access Denied!';
 
             return false;
-        }
+        }*/
 
         if($action->id == 'update' || $action->id == 'init'){
             $this->enableCsrfValidation = false;
@@ -36,6 +36,10 @@ class CronController extends Controller
         $output = shell_exec('crontab -r');
         file_put_contents('/tmp/crontab.txt', $output.'30 2 * * * /usr/bin/php '.getcwd().'/yii cron/update'.PHP_EOL);
         echo exec('crontab /tmp/crontab.txt');
+        $alias = '@frontend/web/img';
+        if (!file_exists(Yii::getAlias($alias))) {
+            mkdir(Yii::getAlias($alias), 0777);
+        }
     }
 
     public function actionUpdate() {
