@@ -3,23 +3,22 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Map;
-use common\models\MapSearch;
+use common\models\SummonerSpells;
+use common\models\SummonerSpellSearch;
 use yii\web\NotFoundHttpException;
 
 /**
- * MapController implements the CRUD actions for Map model.
+ * SummonerSpellController implements the CRUD actions for SummonerSpells model.
  */
-class MapController extends AuthController
+class SummonerSpellController extends AuthController
 {
-
     /**
-     * Lists all Map models.
+     * Lists all SummonerSpells models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MapSearch();
+        $searchModel = new SummonerSpellSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -29,7 +28,7 @@ class MapController extends AuthController
     }
 
     /**
-     * Displays a single Map model.
+     * Displays a single SummonerSpells model.
      * @param integer $id
      * @return mixed
      */
@@ -41,15 +40,15 @@ class MapController extends AuthController
     }
 
     /**
-     * Finds the Map model based on its primary key value.
+     * Finds the SummonerSpells model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Map the loaded model
+     * @return SummonerSpells the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Map::findOne($id)) !== null) {
+        if (($model = SummonerSpells::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

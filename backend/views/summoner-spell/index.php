@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\ItemSearch */
+/* @var $searchModel common\models\SummonerSpellSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Items';
+$this->title = 'Summoner Spells';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="items-index">
+<div class="summoner-spells-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'item_id',
+            'spell_id',
             [
                 'attribute' => 'english',
                 'format' => 'raw',
