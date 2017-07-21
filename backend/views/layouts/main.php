@@ -41,8 +41,12 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
         $menuItems[] = [
-            'label' => 'Champions',
-            'url' => ['/champion/index'],
+            'label' => Yii::t('app', 'Static Data'),
+            'items' => [
+                ['label' => 'Champions', 'url' => ['/champion/index']],
+                ['label' => 'Items', 'url' => ['/item/index']],
+            ]
+
         ];
         $menuItems[] = [
                 'label' => 'User Manager',
