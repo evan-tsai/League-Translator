@@ -45,6 +45,7 @@ AppAsset::register($this);
             'items' => [
                 ['label' => 'Champions', 'url' => ['/champion/index']],
                 ['label' => 'Items', 'url' => ['/item/index']],
+                ['label' => 'Maps', 'url' => ['/map/index']],
             ]
 
         ];
