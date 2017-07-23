@@ -53,6 +53,11 @@ class MasteryType extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getMastery()
+    {
+        return $this->hasMany(Masteries::className(), ['type' => 'type_id']);
+    }
+
     /**
      * @inheritdoc
      * @return MasteryTypeQuery the active query used by this AR class.

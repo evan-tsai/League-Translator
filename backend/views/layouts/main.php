@@ -45,6 +45,7 @@ AppAsset::register($this);
             'items' => [
                 ['label' => 'Champions', 'url' => ['/champion/index']],
                 ['label' => 'Items', 'url' => ['/item/index']],
+                ['label' => 'Masteries', 'url' => ['/mastery/index']],
                 ['label' => 'Maps', 'url' => ['/map/index']],
                 ['label' => 'Summoner Spells', 'url' => ['/summoner-spell/index']],
             ]
