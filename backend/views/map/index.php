@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\MapSearch */
@@ -19,7 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             'map_id',
-            'status',
+            [
+                'attribute' => 'status',
+                'filter' => Html::activeDropDownList($searchModel, 'status', $model->getStatusLabels(), ['class' => 'form-control', 'prompt' => 'All']),
+                'value' => function ($model) {
+                    return ArrayHelper::getValue($model->getStatusLabels(), $model->status);
+                }
+            ],
             'english',
             'taiwan',
 

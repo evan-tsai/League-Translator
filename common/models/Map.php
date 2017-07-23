@@ -20,6 +20,14 @@ class Map extends \yii\db\ActiveRecord
 {
     CONST STATUS_INACTIVE = 0;
     CONST STATUS_ACTIVE = 1;
+
+    public function getStatusLabels()
+    {
+        return [
+            self::STATUS_ACTIVE => 'Enabled',
+            self::STATUS_INACTIVE => 'Disabled',
+        ];
+    }
     /**
      * @inheritdoc
      */
