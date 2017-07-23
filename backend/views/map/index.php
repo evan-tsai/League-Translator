@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 
 $headJS = <<<JS
 $(document).on('ready pjax:success', function() {
-    $("#modalButton").on('click', function(){
+    $(".modalButton").on('click', function(){
         $("#modal").modal("show")
                    .find("#modalContent")
                    .load($(this).parent('a').attr('href'));
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        return Html::a('<span id="modalButton" class="glyphicon glyphicon-pencil"></span>', $url, [
+                        return Html::a('<span class="glyphicon glyphicon-pencil modalButton"></span>', $url, [
                             'title' => Yii::t('app', 'Update'),
                         ]);
                     },
