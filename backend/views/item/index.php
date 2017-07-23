@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data) {
                     return Html::a($data->english, ['view' ,'id' => $data->id]);
                 }
-
             ],
             'taiwan',
         ],

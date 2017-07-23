@@ -27,16 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ArrayHelper::getValue($model->getStatusLabels(), $model->status);
                 }
             ],
-            'english',
-            'taiwan',
-
             [
-                'class' => 'yii\grid\ActionColumn',
-                'buttons' => [
-                    'update' => function() {},
-                    'delete' => function() {},
-                ],
+                'attribute' => 'english',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a($data->english, ['view' ,'id' => $data->id]);
+                }
             ],
+            'taiwan',
         ],
     ]); ?>
 </div>
