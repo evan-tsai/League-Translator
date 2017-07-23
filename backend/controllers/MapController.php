@@ -43,6 +43,25 @@ class MapController extends AuthController
     }
 
     /**
+     * Updates an existing Masteries model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->renderAjax('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
      * Finds the Map model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id

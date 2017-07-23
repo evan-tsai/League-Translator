@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Map */
@@ -19,7 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'map_id',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => ArrayHelper::getValue($model->getStatusLabels(), $model->status),
+            ],
             'english',
             'taiwan',
             'china',

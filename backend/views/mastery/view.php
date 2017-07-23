@@ -19,7 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'mastery_id',
-            'type',
+            [
+                'label' => 'Type',
+                'attribute' => 'masteryType.english',
+            ],
             'english',
             'taiwan',
             'china',
