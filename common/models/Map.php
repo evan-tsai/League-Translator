@@ -18,6 +18,8 @@ use Yii;
  */
 class Map extends \yii\db\ActiveRecord
 {
+    CONST MAP_SUMMONERS_RIFT = 'CLASSIC';
+
     CONST STATUS_INACTIVE = 0;
     CONST STATUS_ACTIVE = 1;
 

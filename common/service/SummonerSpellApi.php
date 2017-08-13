@@ -9,28 +9,29 @@
 namespace common\service;
 
 use Yii;
+use common\models\Map;
 use common\models\SummonerSpells;
 
 class SummonerSpellApi extends BaseApiService
 {
-    protected $spells = [];
+    protected $_spells = [];
 
     public function insert()
     {
         $model = SummonerSpells::find()->select('spell_id')->asArray()->all();
         $spellID = array_flip(array_column($model, 'spell_id'));
 
-        $this->getLocaleApi($spellID);
+        $this->_getLocaleApi($spellID);
 
-        $this->insertTable();
+        $this->_insertTable();
     }
 
-    protected function createData($newData, $label)
+    protected function _createData($newData, $label)
     {
         foreach ($newData as $id => $data) {
-            if (in_array('CLASSIC', $data['modes'])) {
-                $this->spells[$id]['spell_id'] = $id;
-                $this->spells[$id][$label] = $data['name'];
+            if (in_array(Map::MAP_SUMMONERS_RIFT, $data['modes'])) {
+                $this->_spells[$id]['spell_id'] = $id;
+                $this->_spells[$id][$label] = $data['name'];
 
                 // get summoner spell images
                 $alias = '@frontend/web/img/summoner_spells';
@@ -47,17 +48,16 @@ class SummonerSpellApi extends BaseApiService
         }
     }
 
-    protected function insertTable()
+    protected function _insertTable()
     {
-        if (count($this->spells) > 0) {
+        if (count($this->_spells) > 0) {
             try {
                 Yii::$app->db->createCommand()
-                    ->batchInsert(SummonerSpells::tableName(), array_merge(['spell_id'], Yii::$app->params['languages']), $this->spells)
+                    ->batchInsert(SummonerSpells::tableName(), array_merge(['spell_id'], Yii::$app->params['languages']), $this->_spells)
                     ->execute();
             } catch (\Exception $e) {
                 throw $e;
             }
         }
     }
-
 }

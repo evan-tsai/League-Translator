@@ -10,7 +10,7 @@ abstract class BaseApiService extends Object
     public $url;
     public $version;
 
-    protected function getLocaleApi($dataID) {
+    protected function _getLocaleApi($dataID) {
         foreach (Yii::$app->params['languages'] as $key => $label) {
             $apiUrl = $this->url.$key.'&api_key='.Yii::$app->params['apiKey'];
             $response = file_get_contents($apiUrl);
@@ -20,11 +20,11 @@ abstract class BaseApiService extends Object
             if (count($newData) === 0) {
                 break;
             }
-            $this->createData($newData, $label);
+            $this->_createData($newData, $label);
         }
     }
 
     abstract public function insert();
-    abstract protected function createData($newData, $label);
-    abstract protected function insertTable();
+    abstract protected function _createData($newData, $label);
+    abstract protected function _insertTable();
 }

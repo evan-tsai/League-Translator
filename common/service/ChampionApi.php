@@ -7,47 +7,47 @@ use common\models\Champions;
 use common\models\ChampionSpells;
 class ChampionApi extends BaseApiService
 {
-    protected $champions = [];
-    protected $spellData = [];
-    protected $columnTitle = [];
+    protected $_champions = [];
+    protected $_spellData = [];
+    protected $_columnTitle = [];
 
     public function insert() {
         $model = Champions::find()->select('champion_id')->asArray()->all();
         $championID = array_flip(array_column($model, 'champion_id'));
 
-        $this->columnTitle[] = 'champion_id';
+        $this->_columnTitle[] = 'champion_id';
 
-        $this->getLocaleApi($championID);
+        $this->_getLocaleApi($championID);
 
-        $this->insertTable();
+        $this->_insertTable();
     }
 
-    protected function createData($newData, $label)
+    protected function _createData($newData, $label)
     {
         $localeTitle = $label.'_title';
-        $this->columnTitle[] = $localeTitle;
-        $this->columnTitle[] = $label;
+        $this->_columnTitle[] = $localeTitle;
+        $this->_columnTitle[] = $label;
 
         foreach ($newData as $id => $data) {
-            $this->champions[$id]['champion_id'] = $id;
-            $this->champions[$id][$localeTitle] = $data['title'];
-            $this->champions[$id][$label] = $data['name'];
-            $this->spellData[$id]['champion_id'] = $id;
-            $this->spellData[$id] = array_merge($this->spellData[$id], $this->getChampionData($data, $label));
+            $this->_champions[$id]['champion_id'] = $id;
+            $this->_champions[$id][$localeTitle] = $data['title'];
+            $this->_champions[$id][$label] = $data['name'];
+            $this->_spellData[$id]['champion_id'] = $id;
+            $this->_spellData[$id] = array_merge($this->_spellData[$id], $this->_getChampionData($data, $label));
         }
     }
 
-    protected function insertTable()
+    protected function _insertTable()
     {
-        if (count($this->champions) > 0) {
+        if (count($this->_champions) > 0) {
             $connection = Yii::$app->db;
             $trans = $connection->beginTransaction();
             try {
                 $connection->createCommand()
-                    ->batchInsert(Champions::tableName(), $this->columnTitle, $this->champions)
+                    ->batchInsert(Champions::tableName(), $this->_columnTitle, $this->_champions)
                     ->execute();
                 $connection->createCommand()
-                    ->batchInsert(ChampionSpells::tableName(), array_keys(reset($this->spellData)), $this->spellData)
+                    ->batchInsert(ChampionSpells::tableName(), array_keys(reset($this->_spellData)), $this->_spellData)
                     ->execute();
                 $trans->commit();
             } catch (\Exception $e) {
@@ -57,7 +57,7 @@ class ChampionApi extends BaseApiService
         }
     }
 
-    protected function getChampionData($championData, $language) {
+    protected function _getChampionData($championData, $language) {
         $localePassive = $language.'_passive';
         $localeQ = $language.'_q';
         $localeW = $language.'_w';

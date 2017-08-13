@@ -10,44 +10,44 @@ use common\models\ItemMap;
 
 class ItemApi extends BaseApiService
 {
-    protected $itemData = [];
-    protected $typeData = [];
-    protected $mapData = [];
-    protected $itemList = [];
+    protected $_itemData = [];
+    protected $_typeData = [];
+    protected $_mapData = [];
+    protected $_itemList = [];
 
     public function insert()
     {
         $model = Items::find()->select('item_id')->asArray()->all();
         $itemID = array_flip(array_column($model, 'item_id'));
 
-        $this->itemList = $this->getItemList();
-        $this->getLocaleApi($itemID);
+        $this->_itemList = $this->_getItemList();
+        $this->_getLocaleApi($itemID);
 
-        $this->insertTable();
+        $this->_insertTable();
     }
 
-    protected function createData($newData, $label)
+    protected function _createData($newData, $label)
     {
         foreach ($newData as $id => $data) {
             if (!isset($data['name'])) {
                 continue;
             }
-            $this->itemData[$id]['item_id'] = $id;
-            $this->itemData[$id][$label] = $data['name'];
+            $this->_itemData[$id]['item_id'] = $id;
+            $this->_itemData[$id][$label] = $data['name'];
             if (isset($data['tags']) && $label === 'english') {
                 foreach ($data['tags'] as $type) {
                     $type = strtoupper($type);
-                    if (array_key_exists($type, $this->itemList)) {
-                        $this->typeData[$id.'_'.$type]['item_id'] = $id;
-                        $this->typeData[$id.'_'.$type]['subtype_id'] = $this->itemList[$type];
+                    if (array_key_exists($type, $this->_itemList)) {
+                        $this->_typeData[$id.'_'.$type]['item_id'] = $id;
+                        $this->_typeData[$id.'_'.$type]['subtype_id'] = $this->_itemList[$type];
                     }
                 }
             }
             if (isset($data['maps']) && $label === 'english') {
                 foreach ($data['maps'] as $mapID => $mapFlag) {
                     if (true === $mapFlag) {
-                        $this->mapData[$id.'_'.$mapID]['item_id'] = $id;
-                        $this->mapData[$id.'_'.$mapID]['map_id'] = $mapID;
+                        $this->_mapData[$id.'_'.$mapID]['item_id'] = $id;
+                        $this->_mapData[$id.'_'.$mapID]['map_id'] = $mapID;
                     }
                 }
             }
@@ -68,20 +68,20 @@ class ItemApi extends BaseApiService
         }
     }
 
-    protected function insertTable()
+    protected function _insertTable()
     {
-        if ((count($this->itemData) + count($this->typeData) + count($this->mapData)) > 0) {
+        if ((count($this->_itemData) + count($this->_typeData) + count($this->_mapData)) > 0) {
             $connection = Yii::$app->db;
             $trans = $connection->beginTransaction();
             try {
                 $connection->createCommand()
-                    ->batchInsert(Items::tableName(), array_merge(['item_id'], Yii::$app->params['languages']), $this->itemData)
+                    ->batchInsert(Items::tableName(), array_merge(['item_id'], Yii::$app->params['languages']), $this->_itemData)
                     ->execute();
                 $connection->createCommand()
-                    ->batchInsert(ItemType::tableName(), ['item_id', 'subtype_id'], $this->typeData)
+                    ->batchInsert(ItemType::tableName(), ['item_id', 'subtype_id'], $this->_typeData)
                     ->execute();
                 $connection->createCommand()
-                    ->batchInsert(ItemMap::tableName(), ['item_id', 'map_id'], $this->mapData)
+                    ->batchInsert(ItemMap::tableName(), ['item_id', 'map_id'], $this->_mapData)
                     ->execute();
                 $trans->commit();
             } catch (\Exception $e) {
@@ -91,7 +91,7 @@ class ItemApi extends BaseApiService
         }
     }
 
-    protected function getItemList() {
+    protected function _getItemList() {
         $itemList = ItemSubtypeList::find()->asArray()->all();
         foreach ($itemList as &$value) {
             $string = str_replace(' ', '', $value['english']);

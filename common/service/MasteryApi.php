@@ -14,30 +14,30 @@ use common\models\MasteryType;
 
 class MasteryApi extends BaseApiService
 {
-    protected $masteries;
-    protected $typeList = [];
+    protected $_masteries;
+    protected $_typeList = [];
     public function insert()
     {
         $model = Masteries::find()->select('mastery_id')->asArray()->all();
         $masteryID = array_flip(array_column($model, 'mastery_id'));
 
         $typeData = MasteryType::find()->asArray()->all();
-        $this->typeList = array_column($typeData, 'type_id', 'english');
-        $this->getLocaleApi($masteryID);
+        $this->_typeList = array_column($typeData, 'type_id', 'english');
+        $this->_getLocaleApi($masteryID);
 
-        $this->insertTable();
+        $this->_insertTable();
     }
 
-    protected function createData($newData, $label)
+    protected function _createData($newData, $label)
     {
         foreach ($newData as $id => $data) {
             if ($label === 'english') {
-                $this->masteries[$id]['mastery_id'] = $id;
-                if (array_key_exists($data['masteryTree'], $this->typeList)) {
-                    $this->masteries[$id]['type'] = $this->typeList[$data['masteryTree']];
+                $this->_masteries[$id]['mastery_id'] = $id;
+                if (array_key_exists($data['masteryTree'], $this->_typeList)) {
+                    $this->_masteries[$id]['type'] = $this->_typeList[$data['masteryTree']];
                 }
             }
-            $this->masteries[$id][$label] = $data['name'];
+            $this->_masteries[$id][$label] = $data['name'];
 
             try {
                 $alias = '@frontend/web/img/masteries';
@@ -55,12 +55,12 @@ class MasteryApi extends BaseApiService
         }
     }
 
-    protected function insertTable()
+    protected function _insertTable()
     {
-        if (count($this->masteries) > 0) {
+        if (count($this->_masteries) > 0) {
             try {
                 Yii::$app->db->createCommand()
-                    ->batchInsert(Masteries::tableName(), array_merge(['mastery_id', 'type'], Yii::$app->params['languages']), $this->masteries)
+                    ->batchInsert(Masteries::tableName(), array_merge(['mastery_id', 'type'], Yii::$app->params['languages']), $this->_masteries)
                     ->execute();
             } catch (\Exception $e) {
                 throw $e;
