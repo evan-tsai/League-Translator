@@ -3,27 +3,15 @@
 namespace console\controllers;
 
 use Yii;
+use yii\base\ErrorException;
 use yii\web\Controller;
 use common\models\Settings;
-use common\service\ChampionApi;
-use common\service\ItemApi;
-use common\service\MapApi;
-use common\service\MasteryApi;
-use common\service\SummonerSpellApi;
 use common\helpers\SettingHelper;
-
 
 class CronController extends Controller
 {
     public function beforeAction($action)
     {
-        // only executable on local
-        /*if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
-            \Yii::$app->response->content = 'Access Denied!';
-
-            return false;
-        }*/
-
         if($action->id == 'update' || $action->id == 'init'){
             $this->enableCsrfValidation = false;
         }
@@ -45,7 +33,8 @@ class CronController extends Controller
     public function actionUpdate() {
         $currentVersion = SettingHelper::getSetting('api.version');
 
-        $versionUrl = 'https://na1.api.riotgames.com/lol/static-data/v3/realms?api_key='.Yii::$app->params['apiKey'];
+        $staticUrl = 'https://na1.api.riotgames.com/lol/static-data/v3/';
+        $versionUrl = $staticUrl.'realms?api_key='.Yii::$app->params['apiKey'];
         $response = file_get_contents($versionUrl);
         $versionData = json_decode($response, true);
         $version = $versionData['v'];
@@ -60,35 +49,27 @@ class CronController extends Controller
                 $model->property_val = $version;
                 $model->save();
 
-                // update database
-                $champions = new ChampionApi([
-                    'url' => 'https://na1.api.riotgames.com/lol/static-data/v3/champions?champListData=spells&tags=image&tags=passive&dataById=true&locale=',
-                    'version' => $version,
-                ]);
-                $champions->insert();
+                $classData = [
+                    'ChampionApi' => $staticUrl.'champions?champListData=spells&tags=image&tags=passive&dataById=true&locale=',
+                    'MapApi' => $staticUrl.'maps?locale=',
+                    'ItemApi' => $staticUrl.'items?itemListData=image&tags=tags&tags=maps&locale=',
+                    'MasteryApi' => $staticUrl.'masteries?tags=masteryTree&tags=image&locale=',
+                    'SummonerSpellApi' => $staticUrl.'summoner-spells?dataById=true&tags=image&tags=modes&locale=',
+                ];
 
-                $maps = new MapApi([
-                    'url' => 'https://na1.api.riotgames.com/lol/static-data/v3/maps?locale=',
-                ]);
-                $maps->insert();
+                // insert new data
+                foreach ($classData as $className => $url) {
+                    $fullClassName = '\common\service\\'.$className;
+                    if (!class_exists($fullClassName)) {
+                        throw new ErrorException($className.' does not exist.');
+                    }
+                    $apiClass = new $fullClassName([
+                        'url' => $url,
+                        'version' => $version,
+                    ]);
+                    $apiClass->insert();
+                }
 
-                $items = new ItemApi([
-                    'url' => 'https://na1.api.riotgames.com/lol/static-data/v3/items?itemListData=image&tags=tags&tags=maps&locale=',
-                    'version' => $version,
-                ]);
-                $items->insert();
-
-                $items = new MasteryApi([
-                    'url' => 'https://na1.api.riotgames.com/lol/static-data/v3/masteries?tags=masteryTree&tags=image&locale=',
-                    'version' => $version,
-                ]);
-                $items->insert();
-
-                $summonerSpells = new SummonerSpellApi([
-                    'url' => 'https://na1.api.riotgames.com/lol/static-data/v3/summoner-spells?dataById=true&tags=image&tags=modes&locale=',
-                    'version' => $version,
-                ]);
-                $summonerSpells->insert();
                 $trans->commit();
             } catch (\Exception $e) {
                 $body = $e->getMessage();
