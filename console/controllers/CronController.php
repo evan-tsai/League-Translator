@@ -7,6 +7,7 @@ use yii\base\ErrorException;
 use yii\web\Controller;
 use common\models\Settings;
 use common\helpers\SettingHelper;
+use common\helpers\MailHelper;
 
 class CronController extends Controller
 {
@@ -72,25 +73,13 @@ class CronController extends Controller
                 }
 
                 $trans->commit();
+                $body = 'Update Successful!<br />Version Number: '.$version;
+                MailHelper::writeMail($body, 'API Updated');
             } catch (\Exception $e) {
                 $body = $e->getMessage();
                 $trans->rollBack();
+                MailHelper::writeMail($body, 'API Update Error');
             }
-
-            // email admin on successful or failed update
-            if (isset($body)) {
-                $subject = 'API Update Error';
-            } else {
-                $subject = 'API Updated';
-                $body = 'Update Successful!<br />Version Number: '.$version;
-            }
-
-            Yii::$app->mailer->compose()
-                ->setFrom([Yii::$app->params['supportEmail'] => 'League Translate'])
-                ->setTo(Yii::$app->params['adminEmail'])
-                ->setSubject($subject)
-                ->setHtmlBody($body)
-                ->send();
         }
     }
 }
