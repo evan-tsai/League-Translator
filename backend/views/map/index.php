@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'map_id',
             [
                 'attribute' => 'status',
-                'filter' => Html::activeDropDownList($searchModel, 'status', $model->getStatusLabels(), ['class' => 'form-control', 'prompt' => 'All']),
+                'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->getStatusLabels(), ['class' => 'form-control', 'prompt' => 'All']),
                 'value' => function ($model) {
                     return ArrayHelper::getValue($model->getStatusLabels(), $model->status);
                 }

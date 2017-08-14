@@ -52,4 +52,14 @@ class ItemType extends \yii\db\ActiveRecord
     {
         return new ItemTypeQuery(get_called_class());
     }
+
+    public function getItems()
+    {
+        return $this->hasOne(Items::className(), ['item_id' => 'item_id']);
+    }
+
+    public function getItemSubtypeList()
+    {
+        return $this->hasOne(ItemSubtypeList::className(), ['subtype_id' => 'subtype_id']);
+    }
 }

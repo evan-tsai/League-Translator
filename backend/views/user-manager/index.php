@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email',
             [
                 'attribute' => 'status',
+                'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->getStatusLabels(), ['class' => 'form-control', 'prompt' => 'All']),
                 'value' => function($model) {
                     return ArrayHelper::getValue($model->getStatusLabels(), $model->status);
                 }

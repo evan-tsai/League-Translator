@@ -43,6 +43,8 @@ class ItemSearch extends Items
     {
         $query = Items::find();
 
+        $query->with('itemType');
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

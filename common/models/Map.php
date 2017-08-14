@@ -74,4 +74,9 @@ class Map extends \yii\db\ActiveRecord
     {
         return new MapQuery(get_called_class());
     }
+
+    public function getItemMap()
+    {
+        return $this->hasOne(ItemMap::className(), ['map_id' => 'map_id']);
+    }
 }

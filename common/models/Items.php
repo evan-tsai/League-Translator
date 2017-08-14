@@ -62,4 +62,14 @@ class Items extends \yii\db\ActiveRecord
     {
         return new ItemsQuery(get_called_class());
     }
+
+    public function getItemType()
+    {
+        return $this->hasMany(ItemMap::className(), ['item_id' => 'item_id']);
+    }
+
+    public function getItemMap()
+    {
+        return $this->hasMany(ItemMap::className(), ['item_id' => 'item_id']);
+    }
 }

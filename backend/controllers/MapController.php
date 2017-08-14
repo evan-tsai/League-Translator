@@ -19,12 +19,10 @@ class MapController extends AuthController
      */
     public function actionIndex()
     {
-        $model = new Map();
         $searchModel = new MapSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

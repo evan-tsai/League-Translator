@@ -52,4 +52,9 @@ class ItemMap extends \yii\db\ActiveRecord
     {
         return new ItemMapQuery(get_called_class());
     }
+
+    public function getMap()
+    {
+        return $this->hasOne(Map::className(), ['map_id' => 'map_id']);
+    }
 }

@@ -64,4 +64,9 @@ class ItemSubtypeList extends \yii\db\ActiveRecord
     {
         return new ItemTypeListQuery(get_called_class());
     }
+
+    public function getItemType()
+    {
+        return $this->hasOne(ItemType::className(), ['subtype_id' => 'subtype_id']);
+    }
 }
