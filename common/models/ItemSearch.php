@@ -12,6 +12,7 @@ use common\models\Items;
  */
 class ItemSearch extends Items
 {
+    public $item_type;
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class ItemSearch extends Items
     {
         return [
             [['id', 'item_id'], 'integer'],
-            [['english', 'taiwan', 'china', 'korea', 'japan'], 'safe'],
+            [['english', 'taiwan', 'china', 'korea', 'japan', 'item_type'], 'safe'],
         ];
     }
 
@@ -43,7 +44,7 @@ class ItemSearch extends Items
     {
         $query = Items::find();
 
-        $query->with('itemType');
+        $query->joinWith('itemType');
 
         // add conditions that should always apply here
 
@@ -69,7 +70,8 @@ class ItemSearch extends Items
             ->andFilterWhere(['like', 'taiwan', $this->taiwan])
             ->andFilterWhere(['like', 'china', $this->china])
             ->andFilterWhere(['like', 'korea', $this->korea])
-            ->andFilterWhere(['like', 'japan', $this->japan]);
+            ->andFilterWhere(['like', 'japan', $this->japan])
+            ->andFilterWhere(['in', 'item_type.subtype_id', $this->item_type]);
 
         return $dataProvider;
     }

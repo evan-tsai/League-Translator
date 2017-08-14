@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Items;
 use common\models\ItemSearch;
+use common\models\ItemSubtypeList;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -20,10 +21,15 @@ class ItemController extends AuthController
     {
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $list = ItemSubtypeList::find()
+            ->asArray()
+            ->all();
+        $list = array_column($list, 'english', 'subtype_id');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'list' => $list,
         ]);
     }
 
