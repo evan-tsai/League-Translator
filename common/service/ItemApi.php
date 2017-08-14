@@ -15,15 +15,13 @@ class ItemApi extends BaseApiService
     protected $_mapData = [];
     protected $_itemList = [];
 
-    public function insert()
-    {
+    protected function _getModelIDs() {
         $model = Items::find()->select('item_id')->asArray()->all();
         $itemID = array_flip(array_column($model, 'item_id'));
 
         $this->_itemList = $this->_getItemList();
-        $this->_getLocaleApi($itemID);
 
-        $this->_insertTable();
+        return $itemID;
     }
 
     protected function _createData($newData, $label)

@@ -16,14 +16,11 @@ class SummonerSpellApi extends BaseApiService
 {
     protected $_spells = [];
 
-    public function insert()
-    {
+    protected function _getModelIDs() {
         $model = SummonerSpells::find()->select('spell_id')->asArray()->all();
         $spellID = array_flip(array_column($model, 'spell_id'));
 
-        $this->_getLocaleApi($spellID);
-
-        $this->_insertTable();
+        return $spellID;
     }
 
     protected function _createData($newData, $label)

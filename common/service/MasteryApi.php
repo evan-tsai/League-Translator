@@ -16,16 +16,15 @@ class MasteryApi extends BaseApiService
 {
     protected $_masteries;
     protected $_typeList = [];
-    public function insert()
-    {
+
+    protected function _getModelIDs() {
         $model = Masteries::find()->select('mastery_id')->asArray()->all();
         $masteryID = array_flip(array_column($model, 'mastery_id'));
 
         $typeData = MasteryType::find()->asArray()->all();
         $this->_typeList = array_column($typeData, 'type_id', 'english');
-        $this->_getLocaleApi($masteryID);
 
-        $this->_insertTable();
+        return $masteryID;
     }
 
     protected function _createData($newData, $label)

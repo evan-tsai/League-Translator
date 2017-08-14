@@ -49,6 +49,7 @@ class CronController extends Controller
                 $model->property_val = $version;
                 $model->save();
 
+                // maps has to be before item because item relies on current map data
                 $classData = [
                     'ChampionApi' => $staticUrl.'champions?champListData=spells&tags=image&tags=passive&dataById=true&locale=',
                     'MapApi' => $staticUrl.'maps?locale=',
@@ -57,7 +58,7 @@ class CronController extends Controller
                     'SummonerSpellApi' => $staticUrl.'summoner-spells?dataById=true&tags=image&tags=modes&locale=',
                 ];
 
-                // insert new data
+                // update all data
                 foreach ($classData as $className => $url) {
                     $fullClassName = '\common\service\\'.$className;
                     if (!class_exists($fullClassName)) {
@@ -67,7 +68,7 @@ class CronController extends Controller
                         'url' => $url,
                         'version' => $version,
                     ]);
-                    $apiClass->insert();
+                    $apiClass->updateData();
                 }
 
                 $trans->commit();

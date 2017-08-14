@@ -11,15 +11,13 @@ class ChampionApi extends BaseApiService
     protected $_spellData = [];
     protected $_columnTitle = [];
 
-    public function insert() {
+    protected function _getModelIDs() {
         $model = Champions::find()->select('champion_id')->asArray()->all();
         $championID = array_flip(array_column($model, 'champion_id'));
 
         $this->_columnTitle[] = 'champion_id';
 
-        $this->_getLocaleApi($championID);
-
-        $this->_insertTable();
+        return $championID;
     }
 
     protected function _createData($newData, $label)

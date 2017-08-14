@@ -9,14 +9,11 @@ class MapApi extends BaseApiService
 {
     protected $_maps = [];
 
-    public function insert()
-    {
+    protected function _getModelIDs() {
         $model = Map::find()->select('map_id')->asArray()->all();
         $mapID = array_flip(array_column($model, 'map_id'));
 
-        $this->_getLocaleApi($mapID);
-
-        $this->_insertTable();
+        return $mapID;
     }
 
     protected function _createData($newData, $label)
