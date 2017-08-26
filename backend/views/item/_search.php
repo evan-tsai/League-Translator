@@ -26,7 +26,7 @@ $this->registerJs($headJS);
 
 <div class="item-type-search">
     <div class="form-group">
-        <h3 style="display:inline-block;padding-right:20%;">Categories</h3><?= Html::button('Reset', ['id' => 'resetBtn','class' => 'btn-xs btn-primary float-right']) ?>
+        <?= Html::button('All Items', ['id' => 'resetBtn','class' => 'btn-xs btn-primary float-right']) ?>
     </div>
     <?php Pjax::begin(['id' => 'search-form']); ?>
     <?php $form = ActiveForm::begin([
