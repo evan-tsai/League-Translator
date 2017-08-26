@@ -20,6 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'item_id',
             'english',
+            [
+                'label' => 'Item Type',
+                'visible' => !empty($subType) ? true : false,
+                'value' => $subType,
+            ],
             'taiwan',
             'china',
             'korea',

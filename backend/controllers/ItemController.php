@@ -46,8 +46,19 @@ class ItemController extends AuthController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $subType = '';
+        if ($model->itemType) {
+            $subType = [];
+            foreach ($model->itemType as $item) {
+                $subType[] = $item->itemSubtypeList->english;
+            }
+            $subType = implode(', ', $subType);
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'subType' => $subType,
         ]);
     }
 
