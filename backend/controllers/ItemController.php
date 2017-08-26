@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\ItemTypeList;
 use Yii;
 use common\models\Items;
 use common\models\ItemSearch;
@@ -19,16 +20,21 @@ class ItemController extends AuthController
      */
     public function actionIndex()
     {
+        $params = Yii::$app->request->queryParams;
+        //$itemType = $params['ItemSearch']['item_type'];
         $searchModel = new ItemSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $list = ItemSubtypeList::find()
-            ->asArray()
+        $dataProvider = $searchModel->search($params);
+
+        $list = ItemTypeList::find()->All();
+
+        $subList = ItemSubtypeList::find()
+            ->select(['subtype_id', 'type_id', 'english'])
             ->all();
-        $list = array_column($list, 'english', 'subtype_id');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'subList' => $subList,
             'list' => $list,
         ]);
     }

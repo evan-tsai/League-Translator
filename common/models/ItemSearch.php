@@ -5,7 +5,6 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Items;
 
 /**
  * ItemSearch represents the model behind the search form about `common\models\Items`.
@@ -62,16 +61,22 @@ class ItemSearch extends Items
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'item_id' => $this->item_id,
+            'items.id' => $this->id,
+            'items.item_id' => $this->item_id,
+            'item_type.subtype_id' => $this->item_type
         ]);
 
         $query->andFilterWhere(['like', 'english', $this->english])
             ->andFilterWhere(['like', 'taiwan', $this->taiwan])
             ->andFilterWhere(['like', 'china', $this->china])
             ->andFilterWhere(['like', 'korea', $this->korea])
-            ->andFilterWhere(['like', 'japan', $this->japan])
-            ->andFilterWhere(['in', 'item_type.subtype_id', $this->item_type]);
+            ->andFilterWhere(['like', 'japan', $this->japan]);
+
+        if (!empty($this->item_type)) {
+            $query->groupBy(['items.item_id'])
+                ->having('count(items.item_id) = :count')
+                ->addParams([':count' => count($this->item_type)]);
+        }
 
         return $dataProvider;
     }

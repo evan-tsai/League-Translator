@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-3">
-            <?= $this->render('_search', ['model' => $searchModel, 'list' => $list]); ?>
+            <?= $this->render('_search', ['model' => $searchModel, 'list' => $list, 'subList' => $subList]); ?>
         </div>
         <div class="col-md-9">
             <?= GridView::widget([
